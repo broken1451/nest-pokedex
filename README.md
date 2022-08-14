@@ -105,3 +105,19 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+# Production Build
+  1. Crear el archivo ```.env```
+  2. Llenar las variables de entorno de prod
+  3. Crear la nueva imagen
+  ```
+    docker-compose -f docker-compose.prod.yaml o yaml q requiera usar --env-file .env.prod up --build
+  ```
+
+# Notas
+Heroku redeploy sin cambios
+```
+git commit --allow-empty -m 'Trigger Heroku deploy'
+git push heroku <master|main>
+```

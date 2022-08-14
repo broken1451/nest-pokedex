@@ -1,0 +1,31 @@
+version: '3'
+services:
+  pokedexapp:
+    depends_on:
+      - db
+    build: 
+      context: . # basate en todo lo q esta en el archivo docker.compose.prod.yml 
+      dockerfile: Dockerfile # archivo q toma para crear la imagen 
+    image: pokedex-docker # imagen docker "como va a terminar llamandose la imagen"
+    container_name: pokedexapp # nombre del contendor
+    restart: always # reiniciar el contenedor si se detiene
+    ports:
+      - "${PORT}:${PORT}" # por defecto si no se coloca variables de entono va a leer el archivo .env ==> localPort:containerPort
+    # working_dir: /var/www/pokedex
+    environment: # mismas variables q estan en el .env o se pueden escribir su valor  en este punto
+      MONGODB: ${MONGODB}
+      PORT: ${PORT}
+      DEFAULT_LIMIT: ${DEFAULT_LIMIT}
+    # volumes:
+    #   - ./:/var/www/pokedex
+
+  db:
+    image: mongo:5
+    container_name: mongo-poke # nombre del contendor
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGODB_DATABASE: nest-pokemon
+    volumes:
+      - ./mongo:/data/db
