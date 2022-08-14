@@ -5,15 +5,23 @@ import { join } from 'path';
 import { PokemonModule } from './pokemon/pokemon.module';
 import { CommonModule } from './common/common.module';
 import { SeedModule } from './seed/seed.module';
+import { ConfigModule } from '@nestjs/config';
+import { EvnConfiguration } from './config/env.config';
+import { joiValidationSchema } from './config/joi.schema.validation';
+
 
 // console.log({__dirname});
 // console.log({ __dirname: join(__dirname, '../', 'public') });
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      load: [EvnConfiguration], // conversiones y mapeos 
+      validationSchema: joiValidationSchema
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../', 'public'),
     }),
-    MongooseModule.forRoot('mongodb://localhost:27017/nest-pokemon'),
+    MongooseModule.forRoot(process.env.MONGODB),
     PokemonModule,
     CommonModule,
     SeedModule
